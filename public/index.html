@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>E9 WEF 布局对齐工具</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">本地工具 · 泛微 E9</div>
+      <h1>两份文件，双向转换布局</h1>
+      <p>上传一份流程节点布局和一份建模布局，自动识别类型，选择转换方向，预览差异并生成候选 WEF。</p>
+      <div class="hero-tags"><span>本机处理</span><span>AES 解码</span><span>按名称与类型配对</span><span>候选 WEF 回读验证</span></div>
+    </div>
+  </header>
+  <main>
+    <section class="card upload-card">
+      <div class="section-heading"><div><div class="step">01 / 文件</div><h2>选择布局导出文件</h2></div><span class="hint">支持 `.wef`、`.wef.zip` 和已解密 JSON</span></div>
+      <div class="inputs single">
+        <label class="filebox"><span class="number">2</span><strong>一次选择两份 WEF</strong><small>在文件选择窗口中同时选中流程节点和建模布局；顺序不限</small><input id="files" type="file" multiple accept=".wef,.zip,.json,text/plain"><em id="files-name">选择两份文件</em></label>
+      </div>
+      <div class="actions"><button id="analyze" class="primary">重新分析 <span>↗</span></button><p>选择完成后自动识别并分析。</p></div>
+    </section>
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+    <section id="results" hidden>
+      <section class="card overview">
+        <div class="section-heading"><div><div class="step">02 / 对比</div><h2>布局概览</h2></div><div id="identity" class="identity"></div></div>
+        <div class="direction"><span>转换方向</span><button class="direction-btn active" data-direction="workflow-to-model">流程布局 → 建模</button><button class="direction-btn" data-direction="model-to-workflow">建模布局 → 流程</button></div>
+        <div id="stats" class="stats"></div>
+        <div id="warning" class="notice"></div>
+      </section>
+      <section class="card">
+        <div class="section-heading"><div><div class="step">03 / 预览</div><h2>主表布局</h2></div><span class="hint">网格显示字段标签、控件和分区文字</span></div>
+        <div class="preview-pair"><div><h3 id="source-title">来源布局</h3><div id="source-grid" class="grid-wrap"></div></div><div><h3 id="target-title">目标布局</h3><div id="target-grid" class="grid-wrap"></div></div></div>
+      </section>
+      <section class="card">
+        <div class="section-heading"><div><div class="step">04 / 字段</div><h2>匹配清单</h2></div><span class="hint">相同名称与控件类型仅表示布局对应</span></div>
+        <div class="tabs"><button class="tab active" data-tab="matches">已匹配 <b id="match-count"></b></button><button class="tab" data-tab="extras">目标额外字段 <b id="extra-count"></b></button><button class="tab" data-tab="missing">来源未匹配 <b id="missing-count"></b></button></div>
+        <div id="table-area" class="table-area"></div>
+      </section>
+      <section class="card export-card">
+        <div class="section-heading"><div><div class="step">05 / 导出</div><h2>生成候选布局</h2></div></div>
+        <p>沿用来源的行列排版，使用目标表单的标识和字段 ID。生成结果供目标类型的 E9 设计器导入验证。</p>
+        <label id="omit-wrap" class="omit-wrap" hidden><input id="allow-omit" type="checkbox"><span id="omit-label"></span></label>
+        <div class="actions"><button id="generate" class="primary">生成候选 WEF <span>→</span></button><a id="download-wef" class="download" hidden>下载 .wef</a><a id="download-json" class="download secondary" hidden>下载 JSON</a></div>
+        <div id="generated" class="generated" hidden></div>
+        <p class="footnote">导出文件通过本地解密回读校验；尚未验证 E9 设计器是否接受跨类型转换。导入前请备份目标布局，并检查控件、规则及明细表。</p>
+      </section>
+    </section>
+  </main>
+  <footer>文件在浏览器本地处理 · 无文件上传接口</footer>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
